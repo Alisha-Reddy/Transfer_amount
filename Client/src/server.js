@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const server = axios.create({
-  baseURL: "http://localhost:5173",
+  baseURL: "http://localhost:3042",
   // baseURL: A configuration option that sets a base URL for all requests made using this instance. When making a request, if you provide a relative URL, it will be appended to the baseURL.
 });
 

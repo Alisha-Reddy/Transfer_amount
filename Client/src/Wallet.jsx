@@ -1,16 +1,16 @@
 import server from "./server";
 // import * as secp from 'ethereum-cryptography/secp256k1'
-import { secp256k1 } from "ethereum-cryptography/secp256k1";
-import { toHex, utf8ToBytes } from "ethereum-cryptography/utils";
+// import { secp256k1 } from "ethereum-cryptography/secp256k1";
+// import { toHex, utf8ToBytes } from "ethereum-cryptography/utils";
 // import { sha256 } from "ethereum-cryptography/sha256.js";
 
 function Wallet({
   address,
   setAddress,
   balance,
-  setBalance,
   privateKey,
   setPrivateKey,
+  setBalance,
 }) {
   //setaddress and setBalance are functions that update the address and balance state.
   // State in React:
@@ -22,18 +22,24 @@ function Wallet({
     //onChange to handle the change event of the input field.
     //evt is an event object that contains information about the event that occurred (in this case, a change event on the input field).
 
-    const privateKey = evt.target.value; //This line extracts the current value from the input field where the user types the wallet address and assigns it to the address variable.
-    setPrivateKey(privateKey);
-    const address = toHex(secp256k1.getPublicKey(privateKey));
+    const address = evt.target.value; //This line extracts the current value from the input field where the user types the wallet address and assigns it to the address variable.
+    // setPrivateKey(privateKey);
+    // const address = toHex(secp256k1.getPublicKey(privateKey));
     setAddress(address);
     if (address) {
       const {
-        data: { balance },
+        data: { balance, privateKey},
       } = await server.get(`balance/${address}`);
       setBalance(balance);
+      setPrivateKey(privateKey);
+
+          console.log(balance);
+          console.log(privateKey);
     } else {
       setBalance(0);
+      setPrivateKey("")
     }
+
   }
 
   return (
@@ -41,16 +47,16 @@ function Wallet({
       <h1>Your Wallet</h1>
 
       <label>
-        Private Key
+        Wallet Adrdress
         <input
           type="text"
-          placeholder="Type in a private key"
-          value={privateKey}
+          placeholder="Type your address"
+          value={address}
           onChange={onChange}
         />
       </label>
 
-      <div>Address: {address.slice(0, 10)}...</div>
+      {/* <div>Address: { privateKey}</div> */}
 
       <div className="balance">Balance: {balance}</div>
     </div>
